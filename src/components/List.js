@@ -33,18 +33,6 @@ const List = () => {
     };
     return (
         <div className='list'>
-            List
-            <ul>
-                {tasks.map((task, index) => (
-                    <li key={index} className={task.completed ? 'completed' : null}>
-                        <div>
-                            <p>{task.title}</p>
-                            <button onClick={() => completeTask(index)}>complete</button>
-                            <button onClick={() => deleteTask(index)}>delete</button>
-                        </div>
-                    </li>
-                ))}
-            </ul>
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
@@ -52,9 +40,27 @@ const List = () => {
                     setInput('');
                 }}
             >
-                <input value={input} onChange={(e) => setInput(e.target.value)} type='text' />
-                <button>Plus</button>
+                <input
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    type='text'
+                    placeholder='New task'
+                />
+                <button>Add</button>
             </form>
+            <ul>
+                {tasks.map((task, index) => (
+                    <li key={index} className={task.completed ? 'completed' : null}>
+                        <div>
+                            <p>{task.title}</p>
+                            <div>
+                                <button onClick={() => completeTask(index)}>complete</button>
+                                <button onClick={() => deleteTask(index)}>delete</button>
+                            </div>
+                        </div>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 };
