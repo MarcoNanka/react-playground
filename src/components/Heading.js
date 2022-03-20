@@ -6,8 +6,8 @@ const Heading = () => (
 
         <div>
             <Link to='/'>Home</Link>
-            <Link to='/about'>About</Link>
-            <Link to='/list'>Tasks</Link>
+            <Link to='/quiz'>Quiz</Link>
+            <Link to='/tasks'>Tasks</Link>
         </div>
     </div>
 );

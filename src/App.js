@@ -1,15 +1,15 @@
 import Heading from './components/Heading';
 import List from './components/List';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import About from './components/About';
+import Quiz from './components/Quiz';
 
 const App = () => (
   <BrowserRouter>
   <div className='wrapper'>
      <Heading />
      <Routes>
-       <Route path='/about' element={<About />}/>
-       <Route path='/list' element={<List />}/>
+       <Route path='/quiz' element={<Quiz />}/>
+       <Route path='/tasks' element={<List />}/>
      </Routes>
   </div>
   </BrowserRouter>
