@@ -49,7 +49,7 @@ const List = () => {
                 <button>Add</button>
             </form>
             <ul>
-                {tasks.map((task, index) => (
+                {tasks.map((task, index) => ( //task is value, index is index
                     <li key={index} className={task.completed ? 'completed' : null}>
                         <div>
                             <p>{task.title}</p>
