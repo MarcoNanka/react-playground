@@ -1,21 +1,44 @@
 import { useState } from "react";
 
 const Quiz = (props) => {
-  const [quizzes, setQuizzes] = useState([
-    {
-      question: "Who is Boris Johnson",
-      answer: "Current prime minister of GB",
-    },
-  ]);
+  const [quizzes, setQuizzes] = useState([]);
   const [showAnswer, setShowAnswer] = useState(false);
   const [correct, setCorrect] = useState();
   const [input, setInput] = useState("");
+  const [otherinput, setOtherInput] = useState("");
+  const [question, setQuestion] = useState("");
+  const [create, setCreate] = useState(true);
   const quiz = quizzes[0];
   return (
     <>
       <div className="quiz">
         <h1 className="title">Quiz</h1>
-        {!quiz ? (
+        {create ? (
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (otherinput) {
+                if (question) {
+                  const newQuizzes = [...quizzes];
+                  newQuizzes.push({ question, answer: otherinput });
+                  setQuizzes(newQuizzes);
+                  setQuestion("");
+                } else {
+                  setQuestion(otherinput);
+                }
+                setOtherInput("");
+              }
+            }}
+          >
+            <input
+              value={otherinput}
+              onChange={(e) => setOtherInput(e.target.value)}
+              type="text"
+              placeholder={question ? "Create answer" : "Create question"}
+            />
+            <button>{!question ? "Enter answer" : "save"}</button>
+          </form>
+        ) : !quiz ? (
           "no questions left"
         ) : (
           <div>
@@ -63,6 +86,9 @@ const Quiz = (props) => {
           </div>
         )}
       </div>
+      <button onClick={() => setCreate(create ? false : true)}>
+        {create ? "Start questioning" : "Start creating new fancy quizzes"}
+      </button>
     </>
   );
 };
