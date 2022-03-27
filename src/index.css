@@ -23,8 +23,13 @@ body {
   gap: 1rem;
 }
 .heading a {
+  font-size: 1.2rem;
+  font-weight: 400;
   color: black;
   text-decoration: none;
+}
+.heading a:hover {
+  text-decoration: underline;
 }
 ul {
   list-style: none;
@@ -53,6 +58,7 @@ form {
   margin: 2rem 0;
 }
 input {
+  font-size: 1.1rem;
   border: 1px solid #ddd;
   border-radius: 5px;
   padding: 0.8rem;
@@ -72,4 +78,54 @@ button:hover {
 }
 .quiz {
   text-align: center;
+}
+.quizTemplates {
+  background-color: rgb(181, 196, 211);
+  padding: 3rem;
+  width: 90%;
+  max-width: 1500px;
+  margin: 2rem auto;
+  border-radius: 5px;
+}
+.quizButton {
+  font-size: 1.4rem;
+  font-weight: 550;
+  padding: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.quizButton:hover {
+  background: linear-gradient(
+    -45deg,
+    rgb(238, 236, 222),
+    rgb(204, 204, 191),
+    rgb(241, 241, 188)
+  );
+  background-size: 400% 400%;
+  animation: gradient 3s ease infinite;
+}
+.correctAnswer {
+  background-color: rgb(150, 219, 150);
+}
+.wrongAnswer {
+  background-color: rgb(190, 74, 74);
+}
+.numberQuizzes {
+  font-weight: 550;
+}
+.nextQuestion {
+  margin-bottom: 1rem;
 }

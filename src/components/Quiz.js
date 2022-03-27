@@ -1,55 +1,84 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Quiz = (props) => {
   const [quizzes, setQuizzes] = useState([]);
   const [showAnswer, setShowAnswer] = useState(false);
   const [correct, setCorrect] = useState();
+  const [wrong, setWrong] = useState();
   const [input, setInput] = useState("");
   const [otherinput, setOtherInput] = useState("");
   const [question, setQuestion] = useState("");
   const [create, setCreate] = useState(true);
+  const [initialRender, setInitialRender] = useState(false);
+  useEffect(() => {
+    const ls = localStorage.getItem("quizzes");
+    if (!initialRender) {
+      if (ls) setQuizzes(JSON.parse(ls));
+      setInitialRender(true);
+    } else {
+      localStorage.setItem("quizzes", JSON.stringify(quizzes));
+    }
+  }, [quizzes, initialRender]);
   const quiz = quizzes[0];
+
   return (
     <>
       <div className="quiz">
         <h1 className="title">Quiz</h1>
         {create ? (
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (otherinput) {
-                if (question) {
-                  const newQuizzes = [...quizzes];
-                  newQuizzes.push({ question, answer: otherinput });
-                  setQuizzes(newQuizzes);
-                  setQuestion("");
-                } else {
-                  setQuestion(otherinput);
+          <div className="createQuiz quizTemplates">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (otherinput) {
+                  if (question) {
+                    const newQuizzes = [...quizzes];
+                    newQuizzes.push({ question, answer: otherinput });
+                    setQuizzes(newQuizzes);
+                    setQuestion("");
+                  } else {
+                    setQuestion(otherinput);
+                  }
+                  setOtherInput("");
                 }
-                setOtherInput("");
-              }
-            }}
-          >
-            <input
-              value={otherinput}
-              onChange={(e) => setOtherInput(e.target.value)}
-              type="text"
-              placeholder={question ? "Create answer" : "Create question"}
-            />
-            <button>{!question ? "Enter answer" : "save"}</button>
-          </form>
+              }}
+            >
+              <input
+                value={otherinput}
+                onChange={(e) => setOtherInput(e.target.value)}
+                type="text"
+                placeholder={question ? "Create answer" : "Create question"}
+              />
+              <button>{question ? "save" : "Enter answer"}</button>
+            </form>
+            <span>Number of created quizzes: </span>
+            <span className="numberQuizzes">{quizzes.length}</span>
+          </div>
         ) : !quiz ? (
-          "no questions left"
+          <div className="quizTemplates">No question left!</div>
         ) : (
-          <div>
+          <div
+            className={
+              correct
+                ? "quizTemplates correctAnswer"
+                : wrong
+                ? "quizTemplates wrongAnswer"
+                : "quizTemplates"
+            }
+          >
             <div>
-              <p>{quiz.question}</p>
+              <span style={{ borderBottom: "solid" }}>Question</span>
+              <span>: {quiz.question}</span>
             </div>
             {showAnswer ? (
               <div>
-                <p>{quiz.answer}</p>
-                <p>{correct ? "korrekt" : "falsch"}</p>
+                <p>
+                  {correct
+                    ? "That's correct: " + quiz.answer
+                    : "False, the correct answer is: " + quiz.answer}
+                </p>
                 <button
+                  className="nextQuestion"
                   onClick={() => {
                     const newQuizzes = [...quizzes];
                     if (correct) {
@@ -60,6 +89,8 @@ const Quiz = (props) => {
                     }
                     setQuizzes(newQuizzes);
                     setShowAnswer(false);
+                    setCorrect(false);
+                    setWrong(false);
                   }}
                 >
                   next question
@@ -69,7 +100,11 @@ const Quiz = (props) => {
               <form
                 onSubmit={(e) => {
                   e.preventDefault(); //verhindert neuladen von Seite
-                  setCorrect(input === quiz.answer);
+                  setCorrect(
+                    input.toLowerCase().split(" ").join("") ===
+                      quiz.answer.toLowerCase().split(" ").join("")
+                  );
+                  setWrong(correct ? false : true);
                   setShowAnswer(true);
                   setInput("");
                 }}
@@ -83,11 +118,16 @@ const Quiz = (props) => {
                 <button>Submit</button>
               </form>
             )}
+            <span>Number of quizzes left: </span>
+            <span className="numberQuizzes">{quizzes.length}</span>
           </div>
         )}
       </div>
-      <button onClick={() => setCreate(create ? false : true)}>
-        {create ? "Start questioning" : "Start creating new fancy quizzes"}
+      <button
+        className="quizButton"
+        onClick={() => setCreate(create ? false : true)}
+      >
+        {create ? "Start questioning" : "Create new quizzes"}
       </button>
     </>
   );
